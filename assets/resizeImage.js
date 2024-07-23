@@ -1,7 +1,7 @@
 
 const sharp = require('sharp');
 const fs = require('fs');
-const directory = './images';
+const directory = './assets/images';
 
 
 function collect(folder) {
@@ -36,5 +36,17 @@ imagesToResize.forEach(async file => {
     })
     .toFormat('webp')
     .toFile(`${file}-medium.webp`)
+  )
+  })
+
+imagesToResize.forEach(async file => {
+  const scaleByHalf = await sharp(`${file}`)
+  .metadata()
+  .then(({ width, height }) => sharp(`${file}`)
+    .resize(Math.round(width * 0.10), Math.round(height * 0.10), {
+      fit: sharp.fit.cover
+    })
+    .toFormat('webp')
+    .toFile(`${file}-small.webp`)
   )
   })
